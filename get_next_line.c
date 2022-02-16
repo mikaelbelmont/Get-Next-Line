@@ -11,62 +11,54 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <string.h>
 
-// char *new_line(char *s)
-// {
-// 	int i;
-// 	char *line;
-
-// 	i = - 1;
-// 	while (s[++i] != '\n')
-// 		i++;
-	
-// 	line = malloc(sizeof(char) * i + 1);
-// 	i = -1;
-// 	while (s[++i] != '\n')
-// 		line[i] = s[i];
-
-// 	line[i] = '\0';
-// 	return (line);
-// }
-
-
-
-void	get_next_line(int fd)
+typedef struct s_hack
 {
-	static	char	*cpyfile = NULL;
+	int flag;
+	char *strcpy;
+	int cont;
+	int size;
+
+} t_hack;
+
+char	*get_next_line(int fd)
+{
+	static t_hack h;
+
+	char str[4096];
 	char		buff[BUFFER_SIZE + 1];
-	int			i;
-	int size = 0;
-	int cont = 0;
+	int			i = 1;
+	int			j = 1;
 
-	if (!cpyfile)
+	h.size = 0;
+	h.cont = 0;
+	h.flag += 1;
+
+
+	if (h.flag == 1)
 	{
-		cpyfile = malloc(sizeof(char) * 4097);
-		while ((i = read(fd, buff, BUFFER_SIZE)))
+		while (j < 4096)
+			str[j++] = 0; 
+		while (i > 0)
 		{
+			i = read(fd, buff, BUFFER_SIZE);
 			buff[i] = '\0';
-			size += ft_strlen(buff);
-			ft_strlcat(cpyfile, buff, size + 1);
+			h.size += ft_strlen(buff);
+			ft_strlcat(str, buff, h.size);
 		}
+		h.strcpy = str;
 	}
-	while (*cpyfile != '\n')
-	{
-		cpyfile++;
-		cont++;
-	}
-	int cpycont = cont;
-	char *line = malloc(sizeof(char) * cont + 1);
-	while (cpycont--)
-		cpyfile--;
+	while (*(h.strcpy + h.cont) != '\n')
+		h.cont++;
+	char *line = malloc(h.cont + 2);
+	for (int i = 0; i < h.cont + 2; i++)
+		line[i] = 0;
 	i = 0;
-	while (i < cont)
-	{
-		line[i] = *cpyfile++;
-		i++;
-	}
+	while (i < h.cont)
+		line[i++] = *h.strcpy++;
+	line[i++] = '\n';
 	line[i] = '\0';
-	cpyfile++;
-	printf("%s", line);
-
+	h.strcpy++;
+	return (line);
 }

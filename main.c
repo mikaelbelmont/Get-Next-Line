@@ -3,7 +3,16 @@
 int main()
 {
 	int fd;
+
 	fd = open("file", O_RDONLY);
-	for (int i = 0; i < 3; i++)
-		get_next_line(fd);
+	//for(int i; i < 3; i++)
+	char *temp = get_next_line(fd);
+	printf("%s", temp);
+	temp = get_next_line(fd);
+	printf("%s", temp);
+	temp = get_next_line(fd);
+	printf("%s", temp);
+
+	free(temp);
+
 }
