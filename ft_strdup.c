@@ -1,38 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbarreto <mbarreto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/14 15:00:37 by mbarreto          #+#    #+#             */
-/*   Updated: 2022/06/21 20:29:01 by mbarreto         ###   ########.fr       */
+/*   Created: 2022/06/16 16:12:07 by mbarreto          #+#    #+#             */
+/*   Updated: 2022/06/20 13:48:49 by mbarreto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char	*get_next_line(int fd)
+char	*ft_strdup(const char *str)
 {
-	char			*line;
-	static char		buff[FOPEN_MAX][BUFFER_SIZE];
-	int				i;
-	int				size;
+	int		i;
+	char	*new;
 
-	line = 0;
-	size = 0;
-	if (fd < 0 || fd >= FOPEN_MAX)
-		return (line);
-	while (1)
+	i = 0;
+	while (str[i])
+		i++;
+	new = (char *)malloc((i + 1) * sizeof(char));
+	if (!new)
+		return (NULL);
+	i = 0;
+	while (str[i])
 	{
-		i = 1;
-		if (!buff[fd][0])
-			i = read(fd, buff[fd], BUFFER_SIZE);
-		size += searchn(buff[fd]);
-		if (i > 0)
-			line = get_line(line, buff[fd], size);
-		if (!checkn(buff[fd]) || i <= 0)
-			break ;
+		new[i] = str[i];
+		i++;
 	}
-	return (line);
+	new[i] = '\0';
+	return (new);
 }

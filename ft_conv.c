@@ -1,38 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_conv.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbarreto <mbarreto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/14 15:00:37 by mbarreto          #+#    #+#             */
-/*   Updated: 2022/06/21 20:29:01 by mbarreto         ###   ########.fr       */
+/*   Created: 2022/05/05 17:52:46 by mbarreto          #+#    #+#             */
+/*   Updated: 2022/06/15 19:41:14 by mbarreto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char	*get_next_line(int fd)
+int	ft_conv_base(unsigned long long n, char *base, unsigned long long base_size)
 {
-	char			*line;
-	static char		buff[FOPEN_MAX][BUFFER_SIZE];
-	int				i;
-	int				size;
+	int	count;
 
-	line = 0;
-	size = 0;
-	if (fd < 0 || fd >= FOPEN_MAX)
-		return (line);
-	while (1)
-	{
-		i = 1;
-		if (!buff[fd][0])
-			i = read(fd, buff[fd], BUFFER_SIZE);
-		size += searchn(buff[fd]);
-		if (i > 0)
-			line = get_line(line, buff[fd], size);
-		if (!checkn(buff[fd]) || i <= 0)
-			break ;
-	}
-	return (line);
+	count = 0;
+	if (n >= base_size)
+		count = ft_conv_base(n / base_size, base, base_size);
+	count += ft_putchar(base[n % base_size]);
+	return (count);
 }

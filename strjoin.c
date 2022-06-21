@@ -1,38 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   strjoin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbarreto <mbarreto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/14 15:00:37 by mbarreto          #+#    #+#             */
-/*   Updated: 2022/06/21 20:29:01 by mbarreto         ###   ########.fr       */
+/*   Created: 2022/06/16 16:14:11 by mbarreto          #+#    #+#             */
+/*   Updated: 2022/06/20 13:49:14 by mbarreto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char	*get_next_line(int fd)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char			*line;
-	static char		buff[FOPEN_MAX][BUFFER_SIZE];
-	int				i;
-	int				size;
+	int		i;
+	int		j;
+	int		len;
+	char	*new;
 
-	line = 0;
-	size = 0;
-	if (fd < 0 || fd >= FOPEN_MAX)
-		return (line);
-	while (1)
+	if (!s1 || !s2)
+		return (NULL);
+	len = ft_strlen(s1) + ft_strlen(s2);
+	new = (char *)malloc(sizeof(char) * (len + 1));
+	if (!new)
+		return (NULL);
+	i = 0;
+	while (s1[i])
 	{
-		i = 1;
-		if (!buff[fd][0])
-			i = read(fd, buff[fd], BUFFER_SIZE);
-		size += searchn(buff[fd]);
-		if (i > 0)
-			line = get_line(line, buff[fd], size);
-		if (!checkn(buff[fd]) || i <= 0)
-			break ;
+		new[i] = s1[i];
+		i++;
 	}
-	return (line);
+	j = 0;
+	while (s2[j])
+		new[i++] = s2[j++];
+	new[i] = '\0';
+	return (new);
 }

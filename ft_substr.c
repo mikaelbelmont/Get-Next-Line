@@ -1,38 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbarreto <mbarreto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/14 15:00:37 by mbarreto          #+#    #+#             */
-/*   Updated: 2022/06/21 20:29:01 by mbarreto         ###   ########.fr       */
+/*   Created: 2022/06/20 13:56:17 by mbarreto          #+#    #+#             */
+/*   Updated: 2022/06/20 13:56:34 by mbarreto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char	*get_next_line(int fd)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char			*line;
-	static char		buff[FOPEN_MAX][BUFFER_SIZE];
-	int				i;
-	int				size;
+	size_t	i;
+	size_t	j;
+	size_t	s_len;
+	char	*new;
 
-	line = 0;
-	size = 0;
-	if (fd < 0 || fd >= FOPEN_MAX)
-		return (line);
-	while (1)
+	if (!s)
+		return (NULL);
+	s_len = ft_strlen(s);
+	if (s_len < len)
+		new = (char *)malloc(sizeof(char) * (s_len + 1));
+	else
+		new = (char *)malloc(sizeof(char) * (len + 1));
+	if (!new)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s[i])
 	{
-		i = 1;
-		if (!buff[fd][0])
-			i = read(fd, buff[fd], BUFFER_SIZE);
-		size += searchn(buff[fd]);
-		if (i > 0)
-			line = get_line(line, buff[fd], size);
-		if (!checkn(buff[fd]) || i <= 0)
-			break ;
+		if (i >= start && j < len)
+			new[j++] = s[i];
+		i++;
 	}
-	return (line);
+	new[j] = '\0';
+	return (new);
 }

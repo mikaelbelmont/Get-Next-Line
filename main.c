@@ -1,18 +1,62 @@
-#include "get_next_line.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbarreto <mbarreto@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/23 16:23:15 by mbarreto          #+#    #+#             */
+/*   Updated: 2022/06/21 20:31:23 by mbarreto         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int main()
+#include "so_long.h"
+
+//int	key_press(int keycode, t_param *param)
+//{
+//	static int	a = 0;
+//
+//	if (keycode == KEY_W)
+//		param->y++;
+//	else if (keycode == KEY_S)
+//		param->y--;
+//	else if (keycode == KEY_A)
+//		param->x--;
+//	else if (keycode == KEY_D)
+//		param->x++;
+//	else if (keycode == KEY_ESC)
+//		exit(0);
+//	printf("x: %d, y: %d\n", param->x, param->y);
+//	return (0);
+//}
+
+int	ft_xbutton(t_window *window)
 {
-	int fd;
+	mlx_destroy_window(window->mlx, window->win);
+	exit(0);
+}
 
-	fd = open("file", O_RDONLY);
-	//for(int i; i < 3; i++)
-	char *temp = get_next_line(fd);
-	printf("%s", temp);
-	temp = get_next_line(fd);
-	printf("%s", temp);
-	temp = get_next_line(fd);
-	printf("%s", temp);
+int	main(int argc, char **argv)
+{
+	t_window	*window;
 
-	free(temp);
-
+	if (argc != 2)
+	{
+		ft_printf("Map is missing.");
+		exit(0);
+	}
+	window = (t_window *)malloc(sizeof(t_window));
+	window->mvcount = 0;
+	window->collect_img.count = 0;
+	if (!ft_map_prep(window, argv))
+	{
+		exit(0);
+	}
+	ft_gameinit(window);
+	mlx_hook(window->win, X_WINBUTTON, 1L << 3, &ft_xbutton, window);
+	mlx_hook(window->win, KEY_PRESS, 1, ft_startwalking, window);
+	mlx_hook(window->win, KEY_RELEASE, 1, ft_stopwalking, window);
+	mlx_loop_hook(window->mlx, ft_work, window);
+	mlx_loop(window->mlx);
+	ft_end(window);
 }
